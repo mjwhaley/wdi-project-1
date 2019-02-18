@@ -5,7 +5,7 @@ const gameAreaBlockWidth = Math.round(gameAreaWidth/12)
 const gameAreaBlockHeight = Math.round(gameAreaHeight/11)
 const gridVertical = ['v1', 'v2','v3', 'v4','v5', 'v6','v7', 'v8','v9', 'v10', 'v11', 'v12']
 const gridHorizontal = ['h1', 'h2','h3', 'h4','h5', 'h6','h7', 'h8','h9', 'h10', 'h11']
-
+let playerShipLocation = null
 console.log(`Grid Width = ${gameAreaBlockWidth}`)
 console.log(`Grid Height = ${gameAreaBlockHeight}`)
 
@@ -13,8 +13,8 @@ console.log(`Grid Height = ${gameAreaBlockHeight}`)
 function playGame () {
   createGrid(11, 12)
   playerKeys()
-  playerShipLocator()
   placePlayerShip()
+  playerShipLocator()
 }
 
 function createGrid(x, y) {
@@ -32,6 +32,7 @@ function playerKeys () {
     switch(e.which) {
       case 37: // left
         console.log('Moved Left')
+        playerShipMovement('v11', 'v12')
         break
       case 39: // right
         console.log('Moved Right')
@@ -45,13 +46,26 @@ function playerKeys () {
   })
 }
 
-  function placePlayerShip () {
+function placePlayerShip () {
   $('.gameGrid').last().addClass('playerShip')
 }
 
 function playerShipLocator () {
-  console.log($('.container').find('div.h2'))
+  const shipFinder = $('.container').find('div.playerShip')
+  playerShipLocation = shipFinder[0].classList[1]
 }
+
+//ship mover
+// recall playerShipLocator or set value of playerShipLocation.
+// new addClass
+// add class
+ function playerShipMovement (newLocation, oldLocation) {
+  $(`div.h11.${newLocation}`).addClass('playerShip')
+  $(`div.h11.${oldLocation}`).removeClass('playerShip')
+
+}
+
+
 
 $(document).ready(() => {
   playGame()
