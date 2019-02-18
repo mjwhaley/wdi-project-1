@@ -1,6 +1,26 @@
+.container {
+	position: relative;
+	outline: 1px solid rgb(51, 51, 51);
+	margin:5px auto;
+  /* background-color: red; */
+}
+
+.grid {
+	outline: 1px dotted rgb(51, 51, 51);
+	display: inline-block;
+  background-color: white;
+}
+
+
+
+
+
+
+
+
 body {
   background-color: #fff;
-  font-family: 'San Francisco', Fallback, sans-serif;
+  font-family: 'San Francisco',  sans-serif;
   width: 1000px;
   margin: 0 auto;
   color: rgb(51, 51, 51);
@@ -28,9 +48,9 @@ nav ul li:hover {
   font-weight: bold;
 }
 
-main {
+/* main {
   height: 800px;
-}
+} */
 footer {
 border-top: 1px solid rgb(51, 51, 51);
 font-size: 75%;
