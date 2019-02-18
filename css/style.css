@@ -27,11 +27,7 @@ nav ul li {
 nav ul li:hover {
   font-weight: bold;
 }
-/* img {
-  /* display: block; */
-  margin-left: auto;
-  margin-right: auto;
-} */
+
 main {
   height: 800px;
 }
