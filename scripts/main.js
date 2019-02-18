@@ -32,10 +32,11 @@ function playerKeys () {
     switch(e.which) {
       case 37: // left
         console.log('Moved Left')
-        playerShipMovement('v11', 'v12')
+        playerShipMovement(playerShipMovementValue(-1), playerShipLocation)
         break
       case 39: // right
         console.log('Moved Right')
+        playerShipMovement(playerShipMovementValue(1), playerShipLocation)
         break
       case 32: // down
         console.log('Fired Bullet')
@@ -55,17 +56,28 @@ function playerShipLocator () {
   playerShipLocation = shipFinder[0].classList[1]
 }
 
-//ship mover
-// recall playerShipLocator or set value of playerShipLocation.
-// new addClass
-// add class
- function playerShipMovement (newLocation, oldLocation) {
-  $(`div.h11.${newLocation}`).addClass('playerShip')
-  $(`div.h11.${oldLocation}`).removeClass('playerShip')
-
+function playerShipMovement (newLocation, oldLocation) {
+  switch (newLocation === oldLocation) {
+    case false:
+      $(`div.h11.${newLocation}`).addClass('playerShip')
+      $(`div.h11.${oldLocation}`).removeClass('playerShip')
+      playerShipLocation = newLocation
+      break
+    default:
+  }
 }
 
-
+function playerShipMovementValue (movement) {
+  const numberOnly = parseInt(playerShipLocation.replace('v', ''))
+  const newLocation = numberOnly + movement
+  if (newLocation > 12) {
+    return 'v12'
+  } else if  (newLocation < 1) {
+    return 'v1'
+  } else {
+    return 'v' + newLocation
+  }
+}
 
 $(document).ready(() => {
   playGame()
