@@ -1,4 +1,4 @@
-console.log('Running')
+//Varibles
 const gameAreaWidth = 1000
 const gameAreaHeight = 800
 const gameAreaBlockWidth = Math.round(gameAreaWidth/12)
@@ -9,6 +9,7 @@ const gridHorizontal = ['h1', 'h2','h3', 'h4','h5', 'h6','h7', 'h8','h9', 'h10',
 console.log(`Grid Width = ${gameAreaBlockWidth}`)
 console.log(`Grid Height = ${gameAreaBlockHeight}`)
 
+//Functions
 function playGame () {
   createGrid(11, 12)
 }
@@ -23,10 +24,21 @@ function createGrid(x, y) {
   $('.gameGrid').height(gameAreaBlockHeight)
 }
 
-
-
-
-
+$(document).keydown(function(e) {
+  switch(e.which) {
+    case 37: // left
+      console.log('Moved Left')
+      break
+    case 39: // right
+      console.log('Moved Right')
+      break
+    case 32: // down
+      console.log('Fired Bullet')
+      break
+    default: return
+  }
+  e.preventDefault()
+})
 
 $(document).ready(() => {
   playGame()
