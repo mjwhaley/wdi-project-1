@@ -10,6 +10,12 @@ console.log(`Grid Width = ${gameAreaBlockWidth}`)
 console.log(`Grid Height = ${gameAreaBlockHeight}`)
 
 //Functions
+function startGame () {
+  $('li.play').click(function() {
+    $('div.container').removeClass('containerBackground')
+    playGame()
+  })
+}
 function playGame () {
   createGrid(11, 12)
   playerKeys()
@@ -80,5 +86,5 @@ function playerShipMovementValue (movement) {
 }
 
 $(document).ready(() => {
-  playGame()
+  startGame()
 })
