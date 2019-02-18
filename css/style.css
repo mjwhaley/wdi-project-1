@@ -16,6 +16,12 @@
 	display: inline-block;
   /* background-color: white; */
 }
+.playerShip {
+   background-image: url("../images/ship.png");
+   background-repeat: no-repeat;
+   background-position: center;
+   background-size: contain;
+}
 
 body {
   background-color: #fff;

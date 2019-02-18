@@ -13,6 +13,8 @@ console.log(`Grid Height = ${gameAreaBlockHeight}`)
 function playGame () {
   createGrid(11, 12)
   playerKeys()
+  playerShipLocator()
+  placePlayerShip()
 }
 
 function createGrid(x, y) {
@@ -42,6 +44,15 @@ function playerKeys () {
     e.preventDefault()
   })
 }
+
+  function placePlayerShip () {
+  $('.gameGrid').last().addClass('playerShip')
+}
+
+function playerShipLocator () {
+  console.log($('.container').find('div.h2'))
+}
+
 $(document).ready(() => {
   playGame()
 })
