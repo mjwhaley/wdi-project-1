@@ -12,6 +12,7 @@ console.log(`Grid Height = ${gameAreaBlockHeight}`)
 //Functions
 function playGame () {
   createGrid(11, 12)
+  playerKeys()
 }
 
 function createGrid(x, y) {
@@ -24,22 +25,23 @@ function createGrid(x, y) {
   $('.gameGrid').height(gameAreaBlockHeight)
 }
 
-$(document).keydown(function(e) {
-  switch(e.which) {
-    case 37: // left
-      console.log('Moved Left')
-      break
-    case 39: // right
-      console.log('Moved Right')
-      break
-    case 32: // down
-      console.log('Fired Bullet')
-      break
-    default: return
-  }
-  e.preventDefault()
-})
-
+function playerKeys () {
+  $(document).keydown(function(e) {
+    switch(e.which) {
+      case 37: // left
+        console.log('Moved Left')
+        break
+      case 39: // right
+        console.log('Moved Right')
+        break
+      case 32: // down
+        console.log('Fired Bullet')
+        break
+      default: return
+    }
+    e.preventDefault()
+  })
+}
 $(document).ready(() => {
   playGame()
 })
