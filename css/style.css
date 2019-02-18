@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "San Francisco";
+  font-weight: 400;
+  src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff");
+}
+
 .container {
 	position: relative;
 	outline: 1px solid rgb(51, 51, 51);
@@ -5,18 +11,11 @@
   /* background-color: red; */
 }
 
-.grid {
-	outline: 1px dotted rgb(51, 51, 51);
+.gameGrid {
+	/* outline: 1px dotted rgb(51, 51, 51); */
 	display: inline-block;
-  background-color: white;
+  /* background-color: white; */
 }
-
-
-
-
-
-
-
 
 body {
   background-color: #fff;
@@ -45,7 +44,7 @@ nav ul li {
   margin: 0 6px;
 }
 nav ul li:hover {
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 /* main {
@@ -80,9 +79,4 @@ footer p {
   color: rgb(51, 51, 51);
   transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
-}
-@font-face {
-  font-family: "San Francisco";
-  font-weight: 400;
-  src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff");
 }
