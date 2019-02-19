@@ -7,16 +7,23 @@ const gridVertical = ['v1', 'v2','v3', 'v4','v5', 'v6','v7', 'v8','v9', 'v10', '
 const gridHorizontal = ['h1', 'h2','h3', 'h4','h5', 'h6','h7', 'h8','h9', 'h10', 'h11']
 let playerShipLocation = null
 let motherShipLocation = 'v1'
-let alienShipSpeed = 1000
-const motherShipTiming = 10000
-console.log(`Grid Width = ${gameAreaBlockWidth}`)
-console.log(`Grid Height = ${gameAreaBlockHeight}`)
+let motherShipMoverInterval = null
+let motherShipFrequencyInterval = null
+const alienShipSpeed = 700
+const motherShipStartDelay = 2000
+const motherShipFrequency = 5000
 
 //Functions
 function startGame () {
   $('li.play').click(function() {
     $('div.container').removeClass('containerBackground')
     playGame()
+  })
+}
+function quitGame () {
+  $('li.quit').click(function() {
+    clearInterval(motherShipMoverInterval)
+    clearInterval(motherShipFrequencyInterval)
   })
 }
 function playGame () {
@@ -26,7 +33,7 @@ function playGame () {
   placePlayerShip()
   placeAlienShips()
   playerShipLocator()
-  placeMotherShip()
+  setTimeout(launchMotherShip, motherShipStartDelay)
 }
 
 function createGrid(x, y) {
@@ -50,9 +57,6 @@ function playerMove () {
         console.log('Moved Right')
         playerShipMovement(ShipMovementValue(1), playerShipLocation)
         break
-      // case 32: // fire
-      //   console.log('Fired Bullet')
-      //   break
       default: return
     }
     e.preventDefault()
@@ -70,30 +74,37 @@ function playerFire () {
   })
 }
 
-
 function placePlayerShip () {
   $('.gameGrid').last().addClass('playerShip')
 }
 
 function placeAlienShips () {
-
 }
 
-function placeMotherShip () {
-  $(`div.h1.${motherShipLocation}`).addClass('motherShip')
-  setInterval(function(){
-    if (motherShipLocation === 'v13') {
-      clearInterval()
-    } else {
-      const numberOnly = parseInt(motherShipLocation.replace('v', ''))
-      const newLocation = numberOnly + 1
-      const newLocationV = 'v' + newLocation
-      motherShipMovement(newLocationV, motherShipLocation)
-      console.log(motherShipLocation)
-    }
+function motherShipMover () {
+  if (motherShipLocation === 'v13') {
+    clearInterval(motherShipMoverInterval)
+    motherShipIntervalFrequency()
+  } else {
+    const numberOnly = parseInt(motherShipLocation.replace('v', ''))
+    const newLocation = numberOnly + 1
+    const newLocationV = 'v' + newLocation
+    motherShipMovement(newLocationV, motherShipLocation)
   }
-  , alienShipSpeed)
+}
+
+function motherShipIntervalMover () {
+  motherShipMoverInterval = setInterval(motherShipMover , alienShipSpeed)
+}
+
+function motherShipIntervalFrequency () {
+  motherShipFrequencyInterval = setTimeout(launchMotherShip, motherShipFrequency)
+}
+
+function launchMotherShip () {
   motherShipLocation = 'v1'
+  $(`div.h1.${motherShipLocation}`).addClass('motherShip')
+  motherShipIntervalMover()
 }
 
 function playerShipLocator () {
@@ -111,17 +122,12 @@ function playerShipMovement (newLocation, oldLocation) {
     default:
   }
 }
-function motherShipMovement (newLocation, oldLocation) {
-  switch (newLocation === oldLocation) {
-    case false:
-      $(`div.h1.${newLocation}`).addClass('motherShip')
-      $(`div.h1.${oldLocation}`).removeClass('motherShip')
-      motherShipLocation = newLocation
-      break
-    default:
-  }
-}
 
+function motherShipMovement (newLocation, oldLocation) {
+  $(`div.h1.${newLocation}`).addClass('motherShip')
+  $(`div.h1.${oldLocation}`).removeClass('motherShip')
+  motherShipLocation = newLocation
+}
 
 function ShipMovementValue (movement) {
   const numberOnly = parseInt(playerShipLocation.replace('v', ''))
@@ -136,7 +142,7 @@ function ShipMovementValue (movement) {
   }
 }
 
-
 $(document).ready(() => {
   startGame()
+  quitGame()
 })
