@@ -18,7 +18,8 @@ function startGame () {
 }
 function playGame () {
   createGrid(11, 12)
-  playerKeys()
+  playerMove()
+  playerFire()
   placePlayerShip()
   playerShipLocator()
 }
@@ -33,7 +34,7 @@ function createGrid(x, y) {
   $('.gameGrid').height(gameAreaBlockHeight)
 }
 
-function playerKeys () {
+function playerMove () {
   $(document).keydown(function(e) {
     switch(e.which) {
       case 37: // left
@@ -44,7 +45,18 @@ function playerKeys () {
         console.log('Moved Right')
         playerShipMovement(playerShipMovementValue(1), playerShipLocation)
         break
-      case 32: // down
+      // case 32: // fire
+      //   console.log('Fired Bullet')
+      //   break
+      default: return
+    }
+    e.preventDefault()
+  })
+}
+function playerFire () {
+  $(document).keydown(function(e) {
+    switch(e.which) {
+      case 32: // fire
         console.log('Fired Bullet')
         break
       default: return
@@ -52,6 +64,7 @@ function playerKeys () {
     e.preventDefault()
   })
 }
+
 
 function placePlayerShip () {
   $('.gameGrid').last().addClass('playerShip')
