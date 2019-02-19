@@ -26,6 +26,9 @@
    background-position: center;
    background-size: contain;
 }
+.motherShip {
+  background-color: black;
+}
 
 body {
   background-color: #fff;
