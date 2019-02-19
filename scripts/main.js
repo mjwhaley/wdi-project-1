@@ -12,6 +12,7 @@ let motherShipFrequencyInterval = null
 const alienShipSpeed = 700
 const motherShipStartDelay = 2000
 const motherShipFrequency = 5000
+let aliens = []
 
 //Functions
 function startGame () {
@@ -24,6 +25,7 @@ function quitGame () {
   $('li.quit').click(function() {
     clearInterval(motherShipMoverInterval)
     clearInterval(motherShipFrequencyInterval)
+    //Need to add in the removing of the classes to show the ships.
   })
 }
 function playGame () {
@@ -34,6 +36,7 @@ function playGame () {
   placeAlienShips()
   playerShipLocator()
   setTimeout(launchMotherShip, motherShipStartDelay)
+  aliens = [new Alien(3, 2), new Alien(5, 2), new Alien(7, 2)]
 }
 
 function createGrid(x, y) {
@@ -78,7 +81,44 @@ function placePlayerShip () {
   $('.gameGrid').last().addClass('playerShip')
 }
 
+class Alien {
+  constructor(startingV, startingH) {
+    this.currentV = startingV
+    this.currentH = startingH
+    this.isHit = false
+    this.render()
+    this.movementTimer = null
+    this.movement()
+  }
+
+  render() {
+    console.log($(`.v${this.currentV}.h${this.currentH}`).addClass('motherShip'))
+  }
+
+  movement() {
+    this.movementTimer = setInterval(() => {
+      $(`.v${this.currentV}.h${this.currentH}`).removeClass('motherShip')
+      this.currentV++
+      this.render()
+      console.log(aliens)
+    }, alienShipSpeed)
+  }
+}
+
+
+
 function placeAlienShips () {
+
+
+  // * Move a single ship
+  // * left one
+  // * left one
+  // * right one
+  // * right one
+  // * right one
+  // * right one
+  // * left one
+  // * left one
 }
 
 function motherShipMover () {
@@ -88,8 +128,8 @@ function motherShipMover () {
   } else {
     const numberOnly = parseInt(motherShipLocation.replace('v', ''))
     const newLocation = numberOnly + 1
-    const newLocationV = 'v' + newLocation
-    motherShipMovement(newLocationV, motherShipLocation)
+    const updateNewLocation = 'v' + newLocation
+    motherShipMovement(updateNewLocation, motherShipLocation)
   }
 }
 
