@@ -10,7 +10,7 @@ let motherShipLocation = 'v1'
 let motherShipMoverInterval = null
 let motherShipFrequencyInterval = null
 let invadersInterval = null
-const alienShipSpeed = 700
+const alienShipSpeed = 50
 const motherShipStartDelay = 2000
 const motherShipFrequency = 5000
 let aliens = []
@@ -20,6 +20,7 @@ function startGame () {
   $('li.play').click(function() {
     $('div.container').removeClass('containerBackground')
     playGame()
+    console.log(playerShipLocation)
   })
 }
 function quitGame () {
@@ -141,7 +142,7 @@ class Alien {
   }
 
   render() {
-    console.log(this.currentH, this.currentV)
+    // console.log(this.currentH, this.currentV)
     $(`.v${this.currentV}.h${this.currentH}`).addClass('alienShip1')
   }
 
@@ -149,8 +150,10 @@ class Alien {
     this.movementId = setInterval(() => {
       // invadersInterval = setInterval(invaders())
       $(`.v${this.currentV}.h${this.currentH}`).removeClass('alienShip1')
+      if (this.currentH === 22) {
+        alert('Game Over Dude')
+      }
       if (this.currentMoves < 5) {
-        console.log(this.currentMoves)
         this.currentMoves++
         if(this.isMovingRight) {
           this.currentV++
@@ -166,46 +169,6 @@ class Alien {
     }, alienShipSpeed)
   }
 }
-
-// class Alien {
-//   constructor(startingV, startingH, name, score) {
-//     this.currentV = startingV
-//     this.currentH = startingH
-//     this.name = name
-//     this.score = score
-//     this.isHit = false
-//     this.newCurrentV = null
-//     this.newCurrentH = null
-//     this.render()
-//     this.movementTimer = null
-//     this.movement()
-//   }
-//
-//   render() {
-//     $(`.v${this.currentV}.h${this.currentH}`).addClass('alienShip1')
-//   }
-//
-//   movement() {
-//     this.newCurrentV = this.currentV++
-//     console.log(`v${this.newCurrentV}`)
-//     console.log(`v${this.CurrentV}`)
-//     $(`.v${this.newCurrentV}.h${this.currentH}`).addClass('alienShip1')
-//     $(`.v${this.currentV}.h${this.currentH}`).removeClass('alienShip1')
-//     this.currentV = this.newCurrentV
-//     console.log(`v${this.CurrentV}`)
-//     this.render()
-//     console.log(aliens)
-//   }
-// }
-//   movement() {
-//     this.movementTimer = setInterval(() => {
-//       $(`.v${this.currentV}.h${this.currentH}`).removeClass('alienShip1')
-//       this.currentV++
-//       this.render()
-//       console.log(aliens)
-//     }, alienShipSpeed)
-//   }
-// }
 
 function motherShipMover () {
   if (motherShipLocation === 'v25') {
@@ -267,8 +230,15 @@ function ShipMovementValue (movement) {
     return 'v' + newLocation
   }
 }
+function endGame () {
+  if ($('motherShip'))
+    alert('game over')
+}
+
+
 
 $(document).ready(() => {
   startGame()
   quitGame()
+
 })
