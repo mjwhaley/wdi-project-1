@@ -44,6 +44,12 @@
 .quit {
   color: red;
 }
+.bullet {
+  background-image: url("../images/babys-room.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
 body {
   background-color: #fff;
   font-family: 'San Francisco',  sans-serif;

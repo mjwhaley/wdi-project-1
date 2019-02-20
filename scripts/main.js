@@ -134,6 +134,7 @@ function playerFire () {
     switch(e.which) {
       case 32: // fire
         console.log('Fired Bullet')
+        playerShipFire(playerShipLocation, 22)
         break
       default: return
     }
@@ -234,13 +235,26 @@ function playerShipLocator () {
   playerShipLocation = shipFinder[0].classList[1]
 }
 
-function alienShipDead () {
-  const shipFinder = $('.container').find('div.playerShip')
-  playerShipLocation = shipFinder[0].classList[1]
-  (`.v${this.currentV}.h${this.currentH}`)
+// function alienShipDead () {
+//   const shipFinder = $('.container').find('div.playerShip')
+//   playerShipLocation = shipFinder[0].classList[1]
+//   (`.v${this.currentV}.h${this.currentH}`)
+// }
+let bulletInterval = null
+const bulletSpeed = 20
+function playerShipFire (startColumn, startRow) {
+  bulletInterval = setInterval(function () {
+    if (startColumn === 1) {
+      clearInterval(bulletInterval)
+      console.log('Bullet finished')
+    }
+    $(`div.${startColumn}.h${startRow}`).removeClass('bullet')
+    startRow--
+    $(`div.${startColumn}.h${startRow}`).addClass('bullet')
+    console.log('moved one')
+    console.log(`.${startColumn}.h${startRow}`)
+  }, bulletSpeed)
 }
-
-
 
 function playerShipMovement (newLocation, oldLocation) {
   switch (newLocation === oldLocation) {
