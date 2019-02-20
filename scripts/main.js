@@ -16,6 +16,8 @@ const motherShipFrequency = 5000
 let aliens = []
 let gamePlaying = false
 let playerScore = 0
+let bulletInterval = null
+const bulletSpeed =20
 
 //Functions
 function startGame () {
@@ -163,9 +165,7 @@ class Alien {
     this.move()
   }
   scoreUpdater() {
-
   }
-
 
   render() {
     // console.log(this.currentH, this.currentV)
@@ -178,7 +178,7 @@ class Alien {
         clearInterval(this.movementId)
       }
       if (this.isHit === true) {
-        playerScore === playerScore + this.name
+        playerScore === playerScore + this.score
         $('li.score').innerHTML(`Score: ${playerScore}`)
         clearInterval(this.movementId)
         console.log(`Alien ship hit = ${this.name}`)
@@ -235,24 +235,23 @@ function playerShipLocator () {
   playerShipLocation = shipFinder[0].classList[1]
 }
 
-// function alienShipDead () {
-//   const shipFinder = $('.container').find('div.playerShip')
-//   playerShipLocation = shipFinder[0].classList[1]
-//   (`.v${this.currentV}.h${this.currentH}`)
-// }
-let bulletInterval = null
-const bulletSpeed = 20
+function alienShipDead () {
+  let shot = $('.container').find('div.alienShip1.bullet')
+  return shot[0]
+}
+console.log(alienShipDead())
+
 function playerShipFire (startColumn, startRow) {
   bulletInterval = setInterval(function () {
-    if (startColumn === 1) {
+    if (startRow === 1) {
       clearInterval(bulletInterval)
-      console.log('Bullet finished')
+      console.log('fire finished')
     }
+    alienShipDead ()
     $(`div.${startColumn}.h${startRow}`).removeClass('bullet')
     startRow--
     $(`div.${startColumn}.h${startRow}`).addClass('bullet')
-    console.log('moved one')
-    console.log(`.${startColumn}.h${startRow}`)
+
   }, bulletSpeed)
 }
 
