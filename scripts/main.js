@@ -15,6 +15,7 @@ let motherShipStartDelayTimeout = null
 const motherShipFrequency = 5000
 let aliens = []
 let gamePlaying = false
+let playerScore = 0
 
 //Functions
 function startGame () {
@@ -27,10 +28,11 @@ function startGame () {
 function quitGame () {
   $('li.quit').click(function() {
     clearInterval(motherShipMoverInterval)
-    clearInterval(motherShipFrequencyInterval)
+    clearTimeout(motherShipFrequencyInterval)
     clearTimeout(motherShipStartDelayTimeout)
-    gamePlaying = false
     stopPlayeMovement()
+    gamePlaying = false
+
     //Need to add in the removing of the classes to show the ships.
   })
 }
@@ -108,6 +110,8 @@ function createGrid(x, y) {
 function navRemove() {
   $('H1').slideUp()
   $('.fade').fadeOut()
+  $('li.score').removeClass('hidden')
+  $('li.quit').removeClass('hidden')
 }
 function playerMove () {
   $(document).keydown(function(e) {
@@ -157,6 +161,10 @@ class Alien {
     this.movementId = null
     this.move()
   }
+  scoreUpdater() {
+
+  }
+
 
   render() {
     // console.log(this.currentH, this.currentV)
@@ -169,6 +177,8 @@ class Alien {
         clearInterval(this.movementId)
       }
       if (this.isHit === true) {
+        playerScore === playerScore + this.name
+        $('li.score').innerHTML(`Score: ${playerScore}`)
         clearInterval(this.movementId)
         console.log(`Alien ship hit = ${this.name}`)
       }
@@ -223,6 +233,14 @@ function playerShipLocator () {
   const shipFinder = $('.container').find('div.playerShip')
   playerShipLocation = shipFinder[0].classList[1]
 }
+
+function alienShipDead () {
+  const shipFinder = $('.container').find('div.playerShip')
+  playerShipLocation = shipFinder[0].classList[1]
+  (`.v${this.currentV}.h${this.currentH}`)
+}
+
+
 
 function playerShipMovement (newLocation, oldLocation) {
   switch (newLocation === oldLocation) {
