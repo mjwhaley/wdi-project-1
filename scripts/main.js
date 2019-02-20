@@ -9,28 +9,41 @@ let playerShipLocation = null
 let motherShipLocation = 'v1'
 let motherShipMoverInterval = null
 let motherShipFrequencyInterval = null
-let invadersInterval = null
-const alienShipSpeed = 50
+const alienShipSpeed = 500
 const motherShipStartDelay = 2000
+let motherShipStartDelayTimeout = null
 const motherShipFrequency = 5000
 let aliens = []
+let gamePlaying = false
 
 //Functions
 function startGame () {
   $('li.play').click(function() {
     $('div.container').removeClass('containerBackground')
+    gamePlaying = true
     playGame()
-    console.log(playerShipLocation)
   })
 }
 function quitGame () {
   $('li.quit').click(function() {
     clearInterval(motherShipMoverInterval)
     clearInterval(motherShipFrequencyInterval)
-    clearInterval()
+    clearTimeout(motherShipStartDelayTimeout)
+    gamePlaying = false
+    stopPlayeMovement()
     //Need to add in the removing of the classes to show the ships.
   })
 }
+function lostGame () {
+  clearInterval(motherShipMoverInterval)
+  clearTimeout(motherShipFrequencyInterval)
+  clearTimeout(motherShipStartDelayTimeout)
+  stopPlayeMovement()
+  alert('Game Over Dude')
+  gamePlaying = false
+  //Need to add in the removing of the classes to show the ships.
+}
+
 function playGame () {
   createGrid(22, 24)
   navRemove()
@@ -38,7 +51,8 @@ function playGame () {
   playerFire()
   placePlayerShip()
   playerShipLocator()
-  setTimeout(launchMotherShip, motherShipStartDelay)
+
+  motherShipStartDelayTimeout = setTimeout(launchMotherShip, motherShipStartDelay)
   aliens = [new Alien(3, 2, 'johnny5_1', 50),
     new Alien(5, 2, 'johnny5_2', 50),
     new Alien(7, 2, 'johnny5_3', 50),
@@ -122,6 +136,9 @@ function playerFire () {
     e.preventDefault()
   })
 }
+function stopPlayeMovement () {
+  $(document).off('keydown')
+}
 
 function placePlayerShip () {
   $('.gameGrid').last().addClass('playerShip')
@@ -148,11 +165,17 @@ class Alien {
 
   move() {
     this.movementId = setInterval(() => {
-      // invadersInterval = setInterval(invaders())
-      $(`.v${this.currentV}.h${this.currentH}`).removeClass('alienShip1')
-      if (this.currentH === 22) {
-        alert('Game Over Dude')
+      if (gamePlaying === false) {
+        clearInterval(this.movementId)
       }
+      if (this.isHit === true) {
+        clearInterval(this.movementId)
+        console.log(`Alien ship hit = ${this.name}`)
+      }
+      if (this.currentH === 22) {
+        lostGame()
+      }
+      $(`.v${this.currentV}.h${this.currentH}`).removeClass('alienShip1')
       if (this.currentMoves < 5) {
         this.currentMoves++
         if(this.isMovingRight) {
@@ -230,12 +253,6 @@ function ShipMovementValue (movement) {
     return 'v' + newLocation
   }
 }
-function endGame () {
-  if ($('motherShip'))
-    alert('game over')
-}
-
-
 
 $(document).ready(() => {
   startGame()

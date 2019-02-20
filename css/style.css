@@ -21,19 +21,19 @@
   /* background-color: white; */
 }
 .playerShip {
-   background-image: url("../images/ship.png");
+   background-image: url("../images/icons8-fighter-96.png");
    background-repeat: no-repeat;
    background-position: center;
    background-size: contain;
 }
 .motherShip {
-  background-image: url("../images/mothership.png");
+  background-image: url("../images/icons8-ufo-64.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
 }
 .alienShip1 {
-  background-image: url("../images/invader.png");
+  background-image: url("../images/icons8-alien-96.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
