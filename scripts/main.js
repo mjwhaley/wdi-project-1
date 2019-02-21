@@ -152,7 +152,7 @@ class Alien {
 
   render() {
     if (this.isHit === false) {
-      $(`.v${this.currentV}.h${this.currentH}`).addClass('alienShip1')
+      $(`.v${this.currentV}.h${this.currentH}`).addClass('alienShip')
     }
   }
 
@@ -161,7 +161,7 @@ class Alien {
       if (gamePlaying === false) {
         clearInterval(this.movementId)
       }
-      this.isHit = !$(`.v${this.currentV}.h${this.currentH}`).hasClass('alienShip1')
+      this.isHit = !$(`.v${this.currentV}.h${this.currentH}`).hasClass('alienShip')
       if (this.isHit === true) {
         playerScore = playerScore + this.score
         soundBoom.play()
@@ -172,7 +172,7 @@ class Alien {
         clearInterval(this.movementId)
         lostGame()
       }
-      $(`.v${this.currentV}.h${this.currentH}`).removeClass('alienShip1')
+      $(`.v${this.currentV}.h${this.currentH}`).removeClass('alienShip')
       if (this.currentMoves < 5) {
         this.currentMoves++
         if(this.isMovingRight) {
@@ -227,8 +227,8 @@ function playerShipFire (startColumn, startRow) {
     $(`div.${startColumn}.h${startRow}`).removeClass('bullet')
     startRow--
     $(`div.${startColumn}.h${startRow}`).addClass('bullet')
-    if($(`div.${startColumn}.h${startRow}`).hasClass('alienShip1')) {
-      $(`div.${startColumn}.h${startRow}`).removeClass('alienShip1 bullet')
+    if($(`div.${startColumn}.h${startRow}`).hasClass('alienShip')) {
+      $(`div.${startColumn}.h${startRow}`).removeClass('alienShip bullet')
       clearInterval(bulletInterval)
     }
   }, bulletSpeed)

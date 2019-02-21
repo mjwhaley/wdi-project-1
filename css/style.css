@@ -12,7 +12,7 @@
 .containerBackground {
   height: 800px;
   width: 1000px;
-  background-image: url("../images/space1.jpg");
+  background-image: url("../images/space.jpg");
   background-repeat: no-repeat;
   background-position: center;
   /* background-size: contain; */
@@ -21,19 +21,19 @@
 	display: inline-block;
 }
 .playerShip {
-   background-image: url("../images/icons8-launch-96.png");
+   background-image: url("../images/playership.png");
    background-repeat: no-repeat;
    background-position: center;
    background-size: contain;
 }
 .motherShip {
-  background-image: url("../images/icons8-planet-96.png");
+  background-image: url("../images/planet.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
 }
-.alienShip1 {
-  background-image: url("../images/icons8-sci-fi-96.png");
+.alienShip {
+  background-image: url("../images/alien.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -48,7 +48,7 @@
   color: #004685;
 }
 .bullet {
-  background-image: url("../images/lazer2.png");
+  background-image: url("../images/lazer.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
