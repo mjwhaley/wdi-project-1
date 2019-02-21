@@ -18,13 +18,26 @@ let gamePlaying = false
 let playerScore = 0
 let bulletInterval = null
 const bulletSpeed = 20
-let sound = null
+let soundLazer = null
 
 //Functions
 function startGame () {
   $('li.play').click(function() {
     $('div.container').removeClass('containerBackground')
     gamePlaying = true
+    playGame()
+
+  })
+}
+function resetGame () {
+  $('li.reset').click(function() {
+    quitGame()
+    gamePlaying = true
+    playerScore = 0
+    $('li.score').html(`Score: ${playerScore}`)
+    aliens = []
+    $('.container').empty()
+    // $('li.score').html(`Score: ${playerScore}`)
     playGame()
 
   })
@@ -36,6 +49,7 @@ function quitGame () {
     clearTimeout(motherShipStartDelayTimeout)
     stopPlayeMovement()
     gamePlaying = false
+    playerScore = 0
   })
 }
 
@@ -47,9 +61,14 @@ function lostGame () {
   console.log('Lost game')
   gamePlaying = false
 }
+function sounds () {
+  soundLazer = document.querySelector('.lazer')
+}
 
 function playGame () {
   createGrid(16, 20)
+  playerScore = 0
+  $('li.score').html(`Score: ${playerScore}`)
   navRemove()
   playerMove()
   playerFire()
@@ -74,7 +93,7 @@ function navRemove() {
   $('.fade').fadeOut()
   $('li.score').removeClass('hidden')
   $('li.quit').removeClass('hidden')
-
+  $('li.reset').removeClass('hidden')
 }
 function playerMove () {
   $(document).keydown(function(e) {
@@ -93,7 +112,7 @@ function playerMove () {
 
 
 function playAudio() {
-  sound.play()
+  soundLazer.play()
 }
 function playerFire () {
   $(document).keydown(function(e) {
@@ -143,7 +162,7 @@ class Alien {
         clearInterval(this.movementId)
       }
       this.isHit = !$(`.v${this.currentV}.h${this.currentH}`).hasClass('alienShip1')
-      if (this.isHit === true) {
+      if (this.isHit === true && gamePlaying === true) {
         playerScore = playerScore + this.score
         $('li.score').html(`Score: ${playerScore}`)
         clearInterval(this.movementId)
@@ -245,5 +264,6 @@ function ShipMovementValue (movement) {
 $(document).ready(() => {
   startGame()
   quitGame()
-  sound = document.querySelector('.lazer')
+  resetGame()
+  sounds()
 })

@@ -42,7 +42,10 @@
   display: none;
 }
 .quit {
-  color: red;
+  color: #6A0A0A;
+}
+.reset {
+  color: #004685;
 }
 .bullet {
   background-image: url("../images/lazer2.png");
