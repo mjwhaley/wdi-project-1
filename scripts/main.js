@@ -20,6 +20,7 @@ let bulletInterval = null
 const bulletSpeed = 20
 let soundLazer = null
 let soundBoom = null
+let soundPlanet = null
 
 //Functions
 function startGame () {
@@ -61,12 +62,12 @@ function lostGame () {
   clearTimeout(motherShipFrequencyInterval)
   clearTimeout(motherShipStartDelayTimeout)
   stopPlayeMovement()
-  console.log('Lost game')
   gamePlaying = false
 }
 function sounds () {
   soundLazer = document.querySelector('.lazer')
   soundBoom = document.querySelector('.boom')
+  soundPlanet = document.querySelector('.planet')
 }
 
 function playGame () {
@@ -194,6 +195,7 @@ function motherShipMover () {
     clearInterval(motherShipMoverInterval)
     motherShipIntervalFrequency()
   } else {
+    soundPlanet.play()
     const numberOnly = parseInt(motherShipLocation.replace('v', ''))
     const newLocation = numberOnly + 1
     const updateNewLocation = 'v' + newLocation
