@@ -35,7 +35,37 @@ function startGame () {
 function controlsOverlay () {
   $('.controls').click(function() {
     $('div.controlsOverlay').removeClass('hide')
-    console.log('Done')
+    console.log('Done controls')
+  })
+}
+function controlsOverlayRemove () {
+  $('.controlsOverlay').click(function() {
+    $('div.controlsOverlay').addClass('hide')
+    console.log('Done controls hidden')
+  })
+}
+function rulesOverlay () {
+  $('.rules').click(function() {
+    $('div.rulesOverlay').removeClass('hide')
+    console.log('Done rules')
+  })
+}
+function rulesOverlayRemove () {
+  $('.rulesOverlay').click(function() {
+    $('div.rulesOverlay').addClass('hide')
+    console.log('Done rules hidden')
+  })
+}
+function leaderboardOverlay () {
+  $('.leaderboard').click(function() {
+    $('div.leaderboardOverlay').removeClass('hide')
+    console.log('Done leaderboard')
+  })
+}
+function leaderboardOverlayRemove () {
+  $('.leaderboardOverlay').click(function() {
+    $('div.leaderboardOverlay').addClass('hide')
+    console.log('Done leaderboard hidden')
   })
 }
 function resetGame () {
@@ -278,4 +308,9 @@ $(document).ready(() => {
   resetGame()
   sounds()
   controlsOverlay()
+  leaderboardOverlay()
+  rulesOverlay()
+  leaderboardOverlayRemove()
+  rulesOverlayRemove()
+  controlsOverlayRemove()
 })
