@@ -19,6 +19,7 @@ let playerScore = 0
 let bulletInterval = null
 const bulletSpeed = 20
 let soundLazer = null
+let soundBoom = null
 
 //Functions
 function startGame () {
@@ -26,7 +27,6 @@ function startGame () {
     $('div.container').removeClass('containerBackground')
     gamePlaying = true
     playGame()
-
   })
 }
 function resetGame () {
@@ -36,10 +36,13 @@ function resetGame () {
     playerScore = 0
     $('li.score').html(`Score: ${playerScore}`)
     aliens = []
+    for(let i = 0; i < 500; i++) {
+      window.clearTimeout(i)
+      window.clearInterval(i)
+    }
     $('.container').empty()
-    // $('li.score').html(`Score: ${playerScore}`)
-    playGame()
-
+    setTimeout(playGame(), 1000)
+    $('li.score').html('Score: 0')
   })
 }
 function quitGame () {
@@ -63,12 +66,12 @@ function lostGame () {
 }
 function sounds () {
   soundLazer = document.querySelector('.lazer')
+  soundBoom = document.querySelector('.boom')
 }
 
 function playGame () {
   createGrid(16, 20)
   playerScore = 0
-  $('li.score').html(`Score: ${playerScore}`)
   navRemove()
   playerMove()
   playerFire()
@@ -110,16 +113,12 @@ function playerMove () {
   })
 }
 
-
-function playAudio() {
-  soundLazer.play()
-}
 function playerFire () {
   $(document).keydown(function(e) {
     switch(e.which) {
       case 32: // fire
-        playerShipFire(playerShipLocation, 22)
-        playAudio()
+        playerShipFire(playerShipLocation, 21)
+        soundLazer.play()
         break
       default: return
     }
@@ -162,8 +161,9 @@ class Alien {
         clearInterval(this.movementId)
       }
       this.isHit = !$(`.v${this.currentV}.h${this.currentH}`).hasClass('alienShip1')
-      if (this.isHit === true && gamePlaying === true) {
+      if (this.isHit === true) {
         playerScore = playerScore + this.score
+        soundBoom.play()
         $('li.score').html(`Score: ${playerScore}`)
         clearInterval(this.movementId)
       }
