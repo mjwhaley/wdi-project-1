@@ -21,11 +21,13 @@ const bulletSpeed = 20
 let soundLazer = null
 let soundBoom = null
 let soundPlanet = null
+let pilotName = 'Unknown'
 
 //Functions
 function startGame () {
   $('li.play').click(function() {
     $('div.container').removeClass('containerBackground')
+    $('li.pilot').html(`Pilot: ${pilotName}`)
     gamePlaying = true
     playGame()
   })
@@ -95,6 +97,7 @@ function createGrid(x, y) {
 function navRemove() {
   $('H1').slideUp()
   $('.fade').fadeOut()
+  $('li.pilot').removeClass('hidden')
   $('li.score').removeClass('hidden')
   $('li.quit').removeClass('hidden')
   $('li.reset').removeClass('hidden')
