@@ -18,6 +18,7 @@ let gamePlaying = false
 let playerScore = 0
 let bulletInterval = null
 const bulletSpeed = 20
+let sound = null
 
 //Functions
 function startGame () {
@@ -25,6 +26,7 @@ function startGame () {
     $('div.container').removeClass('containerBackground')
     gamePlaying = true
     playGame()
+
   })
 }
 function quitGame () {
@@ -42,7 +44,7 @@ function lostGame () {
   clearTimeout(motherShipFrequencyInterval)
   clearTimeout(motherShipStartDelayTimeout)
   stopPlayeMovement()
-  alert('Game Over Dude')
+  console.log('Lost game')
   gamePlaying = false
 }
 
@@ -72,6 +74,7 @@ function navRemove() {
   $('.fade').fadeOut()
   $('li.score').removeClass('hidden')
   $('li.quit').removeClass('hidden')
+
 }
 function playerMove () {
   $(document).keydown(function(e) {
@@ -87,11 +90,17 @@ function playerMove () {
     e.preventDefault()
   })
 }
+
+
+function playAudio() {
+  sound.play()
+}
 function playerFire () {
   $(document).keydown(function(e) {
     switch(e.which) {
       case 32: // fire
         playerShipFire(playerShipLocation, 22)
+        playAudio()
         break
       default: return
     }
@@ -140,6 +149,7 @@ class Alien {
         clearInterval(this.movementId)
       }
       if (this.currentH === 16) {
+        clearInterval(this.movementId)
         lostGame()
       }
       $(`.v${this.currentV}.h${this.currentH}`).removeClass('alienShip1')
@@ -235,4 +245,5 @@ function ShipMovementValue (movement) {
 $(document).ready(() => {
   startGame()
   quitGame()
+  sound = document.querySelector('.lazer')
 })
