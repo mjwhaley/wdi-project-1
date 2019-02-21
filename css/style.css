@@ -129,3 +129,12 @@ footer p {
   padding-top: 3px;
   padding-bottom: 3px;
 }
+
+.pilotList {
+  list-style: none;
+  text-align: center;
+  padding-left: 0;
+}
+.leaderText {
+  width: 1000px
+}

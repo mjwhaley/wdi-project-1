@@ -22,21 +22,33 @@ let soundLazer = null
 let soundBoom = null
 let soundPlanet = null
 let pilotName = 'Unknown'
+let highscores = null
 
 //Functions
+function checkHighscores() {
+  if(localStorage.getItem('highscore')) {
+    highscores = JSON.parse(localStorage.getItem('highscore'))
+  } else {
+    highscores = []
+  }
+}
+
+
 function startGame () {
   $('li.play').click(function() {
-    $('div.container').removeClass('containerBackground')
-    $('li.pilot').html(`Pilot: ${pilotName}`)
-    gamePlaying = true
-    playGame()
+    $('div.pilotNameOverlay').removeClass('hide')
   })
 }
+
 function pilotNameInput () {
   $('.clickToPlay').click(function() {
     pilotName = $('.inputPilot').val()
     console.log(`Pilot name: ${pilotName}`)
     $('div.pilotNameOverlay').addClass('hide')
+    $('div.container').removeClass('containerBackground')
+    $('li.pilot').html(`Pilot: ${pilotName}`)
+    gamePlaying = true
+    playGame()
   })
 }
 
@@ -67,7 +79,7 @@ function rulesOverlayRemove () {
 function leaderboardOverlay () {
   $('.leaderboard').click(function() {
     $('div.leaderboardOverlay').removeClass('hide')
-    console.log('Done leaderboard')
+    highscores.forEach(score => $('.pilotList').append(`<li><p>${score.pilot} scored: ${score.score}<P></li>`))
   })
 }
 function leaderboardOverlayRemove () {
@@ -99,7 +111,13 @@ function quitGame () {
     clearTimeout(motherShipStartDelayTimeout)
     stopPlayeMovement()
     gamePlaying = false
-    playerScore = 0
+    const itemToStore = { pilot: pilotName, score: playerScore}
+    const newScores = [...highscores, itemToStore]
+    localStorage.setItem('highscore', JSON.stringify(newScores))
+    for(let i = 0; i < 500; i++) {
+      window.clearTimeout(i)
+      window.clearInterval(i)
+    }
   })
 }
 
@@ -109,6 +127,7 @@ function lostGame () {
   clearTimeout(motherShipStartDelayTimeout)
   stopPlayeMovement()
   gamePlaying = false
+  localStorage.setItem('Name and Score', `Pilot: ${pilotName} scored: ${playerScore}`)
 }
 function sounds () {
   soundLazer = document.querySelector('.lazer')
@@ -194,8 +213,6 @@ class Alien {
     this.movementId = null
     this.move()
   }
-  scoreUpdater() {
-  }
 
   render() {
     if (this.isHit === false) {
@@ -237,6 +254,19 @@ class Alien {
   }
 }
 
+function checkForWin () {
+  console.log('checking up n running')
+  setInterval(() => {
+    if (playerScore === 990) {
+      for(let i = 0; i < 500; i++) {
+        window.clearTimeout(i)
+        window.clearInterval(i)
+      }
+      quitGame()
+      console.log('You won bitch')
+    }
+  }, 100)
+}
 function motherShipMover () {
   if (motherShipLocation === 'v21') {
     clearInterval(motherShipMoverInterval)
@@ -311,6 +341,7 @@ function ShipMovementValue (movement) {
 }
 //Run game when document ready
 $(document).ready(() => {
+  checkHighscores()
   startGame()
   quitGame()
   resetGame()
@@ -322,4 +353,5 @@ $(document).ready(() => {
   rulesOverlayRemove()
   controlsOverlayRemove()
   pilotNameInput()
+  checkForWin()
 })
