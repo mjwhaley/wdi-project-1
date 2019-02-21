@@ -116,6 +116,16 @@ footer p {
   left: 50%;
   font-size: 25px;
   color: white;
+  text-align: center;
   transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
+}
+.inputPilot {
+  border-radius: 4px;
+}
+.clickToPlay {
+  border: 2px solid white;
+  border-radius: 4px;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }

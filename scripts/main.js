@@ -32,6 +32,14 @@ function startGame () {
     playGame()
   })
 }
+function pilotNameInput () {
+  $('.clickToPlay').click(function() {
+    pilotName = $('.inputPilot').val()
+    console.log(`Pilot name: ${pilotName}`)
+    $('div.pilotNameOverlay').addClass('hide')
+  })
+}
+
 function controlsOverlay () {
   $('.controls').click(function() {
     $('div.controlsOverlay').removeClass('hide')
@@ -313,4 +321,5 @@ $(document).ready(() => {
   leaderboardOverlayRemove()
   rulesOverlayRemove()
   controlsOverlayRemove()
+  pilotNameInput()
 })
