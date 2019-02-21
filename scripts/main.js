@@ -32,6 +32,12 @@ function startGame () {
     playGame()
   })
 }
+function controlsOverlay () {
+  $('.controls').click(function() {
+    $('div.controlsOverlay').removeClass('hide')
+    console.log('Done')
+  })
+}
 function resetGame () {
   $('li.reset').click(function() {
     quitGame()
@@ -271,4 +277,5 @@ $(document).ready(() => {
   quitGame()
   resetGame()
   sounds()
+  controlsOverlay()
 })

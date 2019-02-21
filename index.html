@@ -10,16 +10,13 @@
     <script src="./scripts/main.js"type="text/javascript"></script>
   </head>
   <body>
-    <!-- <div class="image">
-      <img src="./images/ship.png" alt="">
-    </div> -->
     <header>
       <h1>Space Invaders</h1>
       <nav>
         <ul>
-          <li class='fade'>Controls</li>
-          <li class='fade'>Leaderboard</li>
-          <li class='fade'>Rules</li>
+          <li class='controls fade'>Controls</li>
+          <li class='leaderboard fade'>Leaderboard</li>
+          <li class='rules fade'>Rules</li>
           <li class='play fade'>Play</li>
           <li class='pilot bold hidden'>Pilot: </li>
           <li class='score bold hidden'>Score: 0</li>
@@ -32,8 +29,14 @@
       <div class="container containerBackground">
       </div>
     </main>
-    <div id="overlay">
-      <div id="text">Ready to play Space Invaders</div>
+    <div class="hide controlsOverlay overlay">
+      <div class="controlsText overlayText">Controls Waffle</div>
+    </div>
+    <div class="hide leaderboardOverlay overlay">
+      <div class="leaderText overlayText">Leaderboard Waffle</div>
+    </div>
+    <div class="hide rulesOverlay overlay">
+      <div class="rulesText overlayText">Rules Waffle</div>
     </div>
     <footer>
       <p class="fade">Matthew Whaley @ Triple13 Ltd</p>
