@@ -33,7 +33,6 @@ function checkHighscores() {
   }
 }
 
-
 function startGame () {
   $('li.play').click(function() {
     $('div.pilotNameOverlay').removeClass('hide')
@@ -51,6 +50,120 @@ function pilotNameInput () {
   })
 }
 
+function resetGame () {
+  $('li.reset').click(function() {
+    quitGame()
+    gamePlaying = true
+    playerScore = 0
+    $('li.score').html(`Score: ${playerScore}`)
+    aliens = []
+    for(let i = 0; i < 500; i++) {
+      window.clearTimeout(i)
+      window.clearInterval(i)
+    }
+    $('.container').empty()
+    setTimeout(playGame(), 1000)
+    $('li.score').html('Score: 0')
+  })
+}
+
+function quitGame () {
+  $('li.quit').click(function() {
+    clearInterval(motherShipMoverInterval)
+    clearTimeout(motherShipFrequencyInterval)
+    clearTimeout(motherShipStartDelayTimeout)
+    stopPlayeMovement()
+    gamePlaying = false
+    const itemToStore = { pilot: pilotName, score: playerScore}
+    const newScores = [...highscores, itemToStore]
+    localStorage.setItem('highscore', JSON.stringify(newScores))
+    for(let i = 0; i < 500; i++) {
+      window.clearTimeout(i)
+      window.clearInterval(i)
+    }
+  })
+}
+
+function lostGame () {
+  clearInterval(motherShipMoverInterval)
+  clearTimeout(motherShipFrequencyInterval)
+  clearTimeout(motherShipStartDelayTimeout)
+  stopPlayeMovement()
+  gamePlaying = false
+  localStorage.setItem('Name and Score', `Pilot: ${pilotName} scored: ${playerScore}`)
+}
+
+function playGame () {
+  createGrid(16, 20)
+  playerScore = 0
+  navRemove()
+  playerMove()
+  playerFire()
+  placePlayerShip()
+  playerShipLocator()
+  motherShipStartDelayTimeout = setTimeout(launchMotherShip, motherShipStartDelay)
+  aliens = [new Alien(2, 2, 'johnny5', 50),new Alien(4, 2, 'johnny5', 50),new Alien(6, 2, 'johnny5', 50),new Alien(8, 2, 'johnny5', 50),new Alien(10, 2, 'johnny5', 50),new Alien(12, 2, 'johnny5', 50),new Alien(14, 2, 'johnny5', 50),new Alien(3, 4, 'walle', 40),new Alien(5, 4, 'walle', 40),new Alien(7, 4, 'walle', 40),new Alien(9, 4, 'walle', 40),new Alien(11, 4, 'walle', 40),new Alien(13, 4, 'walle', 40),new Alien(2, 6, 'c3po', 30),new Alien(4, 6, 'c3po', 30),new Alien(6, 6, 'c3po', 30),new Alien(8, 6, 'c3po', 30),new Alien(10, 6, 'c3po', 30),new Alien(12, 6, 'c3po', 30),new Alien(14, 6, 'c3po', 30),new Alien(3, 8, 'r2d2', 20),new Alien(5, 8, 'r2d2', 20),new Alien(7, 8, 'r2d2', 20),new Alien(9, 8, 'r2d2', 20),new Alien(11, 8, 'r2d2', 20),new Alien(13, 8, 'r2d2', 20),new Alien(2, 10, 'bender', 10),new Alien(4, 10, 'bender', 10),new Alien(6, 10, 'bender', 10),new Alien(8, 10, 'bender', 10),new Alien(10, 10, 'bender', 10),new Alien(12, 10, 'bender', 10),new Alien(14, 10, 'bender', 10)]
+}
+
+function createGrid(x, y) {
+  for (let rows = 0; rows < x; rows++) {
+    for (let columns = 0; columns < y; columns++) {
+      $('.container').append(`<div class="gameGrid ${gridVertical[columns]} ${gridHorizontal[rows]}"></div>`)
+    }
+  }
+  $('.gameGrid').width(gameAreaBlockWidth)
+  $('.gameGrid').height(gameAreaBlockHeight)
+}
+
+function checkForWin () {
+  setInterval(() => {
+    if (playerScore === 990) {
+      quitGame()
+      resetGame()
+      winnerMessage()
+      for(let i = 0; i < 500; i++) {
+        window.clearTimeout(i)
+        window.clearInterval(i)
+      }
+    }
+  }, 100)
+}
+
+function motherShipMover () {
+  if (motherShipLocation === 'v21') {
+    clearInterval(motherShipMoverInterval)
+    motherShipIntervalFrequency()
+  } else {
+    soundPlanet.play()
+    const numberOnly = parseInt(motherShipLocation.replace('v', ''))
+    const newLocation = numberOnly + 1
+    const updateNewLocation = 'v' + newLocation
+    motherShipMovement(updateNewLocation, motherShipLocation)
+  }
+}
+
+function motherShipIntervalMover () {
+  motherShipMoverInterval = setInterval(motherShipMover , alienShipSpeed)
+}
+
+function motherShipIntervalFrequency () {
+  motherShipFrequencyInterval = setTimeout(launchMotherShip, motherShipFrequency)
+}
+
+function ShipMovementValue (movement) {
+  const numberOnly = parseInt(playerShipLocation.replace('v', ''))
+  const newLocation = numberOnly + movement
+  if (newLocation > 20) {
+    return 'v20'
+  } else if  (newLocation < 1) {
+    return 'v1'
+  } else {
+    return 'v' + newLocation
+  }
+}
+
+
+//Functions that do DOM lookups
 function controlsOverlay () {
   $('.controls').click(function() {
     $('div.controlsOverlay').removeClass('hide')
@@ -82,73 +195,11 @@ function leaderboardOverlayRemove () {
     $('div.leaderboardOverlay').addClass('hide')
   })
 }
-function resetGame () {
-  $('li.reset').click(function() {
-    quitGame()
-    gamePlaying = true
-    playerScore = 0
-    $('li.score').html(`Score: ${playerScore}`)
-    aliens = []
-    for(let i = 0; i < 500; i++) {
-      window.clearTimeout(i)
-      window.clearInterval(i)
-    }
-    $('.container').empty()
-    setTimeout(playGame(), 1000)
-    $('li.score').html('Score: 0')
-  })
-}
-function quitGame () {
-  $('li.quit').click(function() {
-    clearInterval(motherShipMoverInterval)
-    clearTimeout(motherShipFrequencyInterval)
-    clearTimeout(motherShipStartDelayTimeout)
-    stopPlayeMovement()
-    gamePlaying = false
-    const itemToStore = { pilot: pilotName, score: playerScore}
-    const newScores = [...highscores, itemToStore]
-    localStorage.setItem('highscore', JSON.stringify(newScores))
-    for(let i = 0; i < 500; i++) {
-      window.clearTimeout(i)
-      window.clearInterval(i)
-    }
-  })
-}
 
-function lostGame () {
-  clearInterval(motherShipMoverInterval)
-  clearTimeout(motherShipFrequencyInterval)
-  clearTimeout(motherShipStartDelayTimeout)
-  stopPlayeMovement()
-  gamePlaying = false
-  localStorage.setItem('Name and Score', `Pilot: ${pilotName} scored: ${playerScore}`)
-}
 function sounds () {
   soundLazer = document.querySelector('.lazer')
   soundBoom = document.querySelector('.boom')
   soundPlanet = document.querySelector('.planet')
-}
-
-function playGame () {
-  createGrid(16, 20)
-  playerScore = 0
-  navRemove()
-  playerMove()
-  playerFire()
-  placePlayerShip()
-  playerShipLocator()
-  motherShipStartDelayTimeout = setTimeout(launchMotherShip, motherShipStartDelay)
-  aliens = [new Alien(2, 2, 'johnny5', 50),new Alien(4, 2, 'johnny5', 50),new Alien(6, 2, 'johnny5', 50),new Alien(8, 2, 'johnny5', 50),new Alien(10, 2, 'johnny5', 50),new Alien(12, 2, 'johnny5', 50),new Alien(14, 2, 'johnny5', 50),new Alien(3, 4, 'walle', 40),new Alien(5, 4, 'walle', 40),new Alien(7, 4, 'walle', 40),new Alien(9, 4, 'walle', 40),new Alien(11, 4, 'walle', 40),new Alien(13, 4, 'walle', 40),new Alien(2, 6, 'c3po', 30),new Alien(4, 6, 'c3po', 30),new Alien(6, 6, 'c3po', 30),new Alien(8, 6, 'c3po', 30),new Alien(10, 6, 'c3po', 30),new Alien(12, 6, 'c3po', 30),new Alien(14, 6, 'c3po', 30),new Alien(3, 8, 'r2d2', 20),new Alien(5, 8, 'r2d2', 20),new Alien(7, 8, 'r2d2', 20),new Alien(9, 8, 'r2d2', 20),new Alien(11, 8, 'r2d2', 20),new Alien(13, 8, 'r2d2', 20),new Alien(2, 10, 'bender', 10),new Alien(4, 10, 'bender', 10),new Alien(6, 10, 'bender', 10),new Alien(8, 10, 'bender', 10),new Alien(10, 10, 'bender', 10),new Alien(12, 10, 'bender', 10),new Alien(14, 10, 'bender', 10)]
-}
-
-function createGrid(x, y) {
-  for (let rows = 0; rows < x; rows++) {
-    for (let columns = 0; columns < y; columns++) {
-      $('.container').append(`<div class="gameGrid ${gridVertical[columns]} ${gridHorizontal[rows]}"></div>`)
-    }
-  }
-  $('.gameGrid').width(gameAreaBlockWidth)
-  $('.gameGrid').height(gameAreaBlockHeight)
 }
 
 function navRemove() {
@@ -159,6 +210,7 @@ function navRemove() {
   $('li.quit').removeClass('hidden')
   $('li.reset').removeClass('hidden')
 }
+
 function playerMove () {
   $(document).keydown(function(e) {
     switch(e.which) {
@@ -194,6 +246,59 @@ function placePlayerShip () {
   $('.gameGrid').last().addClass('playerShip')
 }
 
+function winnerMessage () {
+  $('div.gameWonOverlay').removeClass('hide')
+  $('.gameWonText').html(`<p>Game won</p><p>Welldone ${pilotName}</p><p>You scored: ${playerScore}</p><p class="playAgainButton">You want to play again?</p>`)
+  playAgain()
+}
+function playAgain () {
+  $('.playAgainButton').click(function() {
+    $('div.gameWonOverlay').addClass('hide')
+    quitGame()
+    resetGame()
+  })
+}
+function launchMotherShip () {
+  motherShipLocation = 'v1'
+  $(`div.h1.${motherShipLocation}`).addClass('motherShip')
+  motherShipIntervalMover()
+}
+
+function playerShipLocator () {
+  const shipFinder = $('.container').find('div.playerShip')
+  playerShipLocation = shipFinder[0].classList[1]
+}
+
+function playerShipFire (startColumn, startRow) {
+  bulletInterval = setInterval(function () {
+    $(`div.${startColumn}.h${startRow}`).removeClass('bullet')
+    startRow--
+    $(`div.${startColumn}.h${startRow}`).addClass('bullet')
+    if($(`div.${startColumn}.h${startRow}`).hasClass('alienShip')) {
+      $(`div.${startColumn}.h${startRow}`).removeClass('alienShip bullet')
+      clearInterval(bulletInterval)
+    }
+  }, bulletSpeed)
+}
+
+function playerShipMovement (newLocation, oldLocation) {
+  switch (newLocation === oldLocation) {
+    case false:
+      $(`div.h16.${newLocation}`).addClass('playerShip')
+      $(`div.h16.${oldLocation}`).removeClass('playerShip')
+      playerShipLocation = newLocation
+      break
+    default:
+  }
+}
+
+function motherShipMovement (newLocation, oldLocation) {
+  $(`div.h1.${newLocation}`).addClass('motherShip')
+  $(`div.h1.${oldLocation}`).removeClass('motherShip')
+  motherShipLocation = newLocation
+}
+
+//Constructor Object
 class Alien {
   constructor(startingV, startingH, name, score) {
     this.currentV = startingV
@@ -248,104 +353,6 @@ class Alien {
   }
 }
 
-function checkForWin () {
-  setInterval(() => {
-    if (playerScore === 990) {
-      quitGame()
-      resetGame()
-      winnerMessage()
-      for(let i = 0; i < 500; i++) {
-        window.clearTimeout(i)
-        window.clearInterval(i)
-      }
-    }
-  }, 100)
-}
-
-function winnerMessage () {
-  $('div.gameWonOverlay').removeClass('hide')
-  $('.gameWonText').html(`<p>Game won</p><p>Welldone ${pilotName}</p><p>You scored: ${playerScore}</p><p class="playAgainButton">You want to play again?</p>`)
-  playAgain()
-}
-function playAgain () {
-  $('.playAgainButton').click(function() {
-    $('div.gameWonOverlay').addClass('hide')
-    quitGame()
-    resetGame()
-  })
-}
-function motherShipMover () {
-  if (motherShipLocation === 'v21') {
-    clearInterval(motherShipMoverInterval)
-    motherShipIntervalFrequency()
-  } else {
-    soundPlanet.play()
-    const numberOnly = parseInt(motherShipLocation.replace('v', ''))
-    const newLocation = numberOnly + 1
-    const updateNewLocation = 'v' + newLocation
-    motherShipMovement(updateNewLocation, motherShipLocation)
-  }
-}
-
-function motherShipIntervalMover () {
-  motherShipMoverInterval = setInterval(motherShipMover , alienShipSpeed)
-}
-
-function motherShipIntervalFrequency () {
-  motherShipFrequencyInterval = setTimeout(launchMotherShip, motherShipFrequency)
-}
-
-function launchMotherShip () {
-  motherShipLocation = 'v1'
-  $(`div.h1.${motherShipLocation}`).addClass('motherShip')
-  motherShipIntervalMover()
-}
-
-function playerShipLocator () {
-  const shipFinder = $('.container').find('div.playerShip')
-  playerShipLocation = shipFinder[0].classList[1]
-}
-
-function playerShipFire (startColumn, startRow) {
-  bulletInterval = setInterval(function () {
-    $(`div.${startColumn}.h${startRow}`).removeClass('bullet')
-    startRow--
-    $(`div.${startColumn}.h${startRow}`).addClass('bullet')
-    if($(`div.${startColumn}.h${startRow}`).hasClass('alienShip')) {
-      $(`div.${startColumn}.h${startRow}`).removeClass('alienShip bullet')
-      clearInterval(bulletInterval)
-    }
-  }, bulletSpeed)
-}
-
-function playerShipMovement (newLocation, oldLocation) {
-  switch (newLocation === oldLocation) {
-    case false:
-      $(`div.h16.${newLocation}`).addClass('playerShip')
-      $(`div.h16.${oldLocation}`).removeClass('playerShip')
-      playerShipLocation = newLocation
-      break
-    default:
-  }
-}
-
-function motherShipMovement (newLocation, oldLocation) {
-  $(`div.h1.${newLocation}`).addClass('motherShip')
-  $(`div.h1.${oldLocation}`).removeClass('motherShip')
-  motherShipLocation = newLocation
-}
-
-function ShipMovementValue (movement) {
-  const numberOnly = parseInt(playerShipLocation.replace('v', ''))
-  const newLocation = numberOnly + movement
-  if (newLocation > 20) {
-    return 'v20'
-  } else if  (newLocation < 1) {
-    return 'v1'
-  } else {
-    return 'v' + newLocation
-  }
-}
 //Run game when document ready
 $(document).ready(() => {
   checkHighscores()
