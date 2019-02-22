@@ -55,25 +55,21 @@ function pilotNameInput () {
 function controlsOverlay () {
   $('.controls').click(function() {
     $('div.controlsOverlay').removeClass('hide')
-    console.log('Done controls')
   })
 }
 function controlsOverlayRemove () {
   $('.controlsOverlay').click(function() {
     $('div.controlsOverlay').addClass('hide')
-    console.log('Done controls hidden')
   })
 }
 function rulesOverlay () {
   $('.rules').click(function() {
     $('div.rulesOverlay').removeClass('hide')
-    console.log('Done rules')
   })
 }
 function rulesOverlayRemove () {
   $('.rulesOverlay').click(function() {
     $('div.rulesOverlay').addClass('hide')
-    console.log('Done rules hidden')
   })
 }
 function leaderboardOverlay () {
@@ -85,7 +81,6 @@ function leaderboardOverlay () {
 function leaderboardOverlayRemove () {
   $('.leaderboardOverlay').click(function() {
     $('div.leaderboardOverlay').addClass('hide')
-    console.log('Done leaderboard hidden')
   })
 }
 function resetGame () {
@@ -184,7 +179,7 @@ function playerFire () {
   $(document).keydown(function(e) {
     switch(e.which) {
       case 32: // fire
-        playerShipFire(playerShipLocation, 21)
+        playerShipFire(playerShipLocation, 15)
         soundLazer.play()
         break
       default: return
@@ -258,14 +253,27 @@ function checkForWin () {
   console.log('checking up n running')
   setInterval(() => {
     if (playerScore === 990) {
+      quitGame()
+      resetGame()
+      winnerMessage()
       for(let i = 0; i < 500; i++) {
         window.clearTimeout(i)
         window.clearInterval(i)
       }
-      quitGame()
-      console.log('You won bitch')
     }
   }, 100)
+}
+
+function winnerMessage () {
+  $('div.gameWonOverlay').removeClass('hide')
+  $('.gameWonText').html(`<p>Game won</p><p>Welldone ${pilotName}</p><p>You scored: ${playerScore}</p><p class="playAgainButton">You want to play again?</p>`)
+  playAgain()
+}
+function playAgain () {
+  $('.playAgainButton').click(function() {
+    $('div.gameWonOverlay').addClass('hide')
+    resetGame()
+  })
 }
 function motherShipMover () {
   if (motherShipLocation === 'v21') {

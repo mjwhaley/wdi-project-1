@@ -87,7 +87,6 @@ nav ul li:hover {
   font-weight: bolder;
 }
 
-
 footer {
 border-top: 2px solid rgb(51, 51, 51);
 font-size: 75%;
@@ -137,4 +136,8 @@ footer p {
 }
 .leaderText {
   width: 1000px
+}
+.gameWonText {
+  font-weight: bold;
+  font-size: 2em;
 }
