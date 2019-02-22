@@ -43,7 +43,6 @@ function startGame () {
 function pilotNameInput () {
   $('.clickToPlay').click(function() {
     pilotName = $('.inputPilot').val()
-    console.log(`Pilot name: ${pilotName}`)
     $('div.pilotNameOverlay').addClass('hide')
     $('div.container').removeClass('containerBackground')
     $('li.pilot').html(`Pilot: ${pilotName}`)
@@ -250,7 +249,6 @@ class Alien {
 }
 
 function checkForWin () {
-  console.log('checking up n running')
   setInterval(() => {
     if (playerScore === 990) {
       quitGame()
@@ -272,6 +270,7 @@ function winnerMessage () {
 function playAgain () {
   $('.playAgainButton').click(function() {
     $('div.gameWonOverlay').addClass('hide')
+    quitGame()
     resetGame()
   })
 }
